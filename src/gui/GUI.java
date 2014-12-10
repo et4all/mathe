@@ -17,8 +17,12 @@ public class GUI extends JFrame {
 	private int stdHeight = 300;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
-
+	private JMenu optionsMenu;
 	private JMenuItem closeMenuItem;
+	private JMenuItem addMenuItem;
+	private JMenuItem subMenuItem;
+	private JMenuItem mulMenuItem;
+	private JMenuItem divMenuItem;
 
 	public GUI() {
 		init();
@@ -37,7 +41,12 @@ public class GUI extends JFrame {
 
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu();
+		optionsMenu = new JMenu();
 		closeMenuItem = new JMenuItem();
+		addMenuItem = new JMenuItem();
+		subMenuItem = new JMenuItem();
+		mulMenuItem = new JMenuItem();
+		divMenuItem = new JMenuItem();
 
 		fileMenu.setText("Datei");
 		closeMenuItem.setText("Beenden");
@@ -50,7 +59,51 @@ public class GUI extends JFrame {
 			}
 		});
 		fileMenu.add(closeMenuItem);
+
+		optionsMenu.setText("Optionen");
+
+		addMenuItem.setText("Addition");
+		addMenuItem.setToolTipText("Zahlen addieren");
+		addMenuItem.setIcon(new ImageIcon("img/add.gif"));
+		addMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				// TODO
+			}
+		});
+		optionsMenu.add(addMenuItem);
+
+		subMenuItem.setText("Subtraktion");
+		subMenuItem.setToolTipText("Zahlen subtrahieren");
+		subMenuItem.setIcon(new ImageIcon("img/sub.gif"));
+		subMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				// TODO
+			}
+		});
+		optionsMenu.add(subMenuItem);
+
+		mulMenuItem.setText("Multiplikation");
+		mulMenuItem.setToolTipText("Zahlen multiplizieren");
+		mulMenuItem.setIcon(new ImageIcon("img/mul.gif"));
+		mulMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				// TODO
+			}
+		});
+		optionsMenu.add(mulMenuItem);
+
+		divMenuItem.setText("Division");
+		divMenuItem.setToolTipText("Zahlen dividieren");
+		divMenuItem.setIcon(new ImageIcon("img/div.gif"));
+		divMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				// TODO
+			}
+		});
+		optionsMenu.add(divMenuItem);
+
 		menuBar.add(fileMenu);
+		menuBar.add(optionsMenu);
 		setJMenuBar(menuBar);
 
 		setVisible(true);
