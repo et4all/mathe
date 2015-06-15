@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -8,13 +9,14 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
 	private int stdWidth = 500;
 	private int stdHeight = 300;
+	private JPanel contentPanel;
 	private JMenuBar menuBar;
 	private JMenu fileMenu;
 	private JMenu optionsMenu;
@@ -23,21 +25,23 @@ public class GUI extends JFrame {
 	private JMenuItem subMenuItem;
 	private JMenuItem mulMenuItem;
 	private JMenuItem divMenuItem;
+	public static final int ADDITION = 1;
 
 	public GUI() {
 		init();
+		this.setVisible(true);
 	}
 
 	private void init() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException e) {
+		} catch (Exception e) {
 			e.printStackTrace(); // TODO
 		}
-		setSize(stdWidth, stdHeight);
-		setLocationRelativeTo(null);
-		setTitle("Mathe");
+		this.setSize(stdWidth, stdHeight);
+		this.setLocationRelativeTo(null);
+		this.setTitle("Mathe");
 
 		menuBar = new JMenuBar();
 		fileMenu = new JMenu();
@@ -67,7 +71,7 @@ public class GUI extends JFrame {
 		addMenuItem.setIcon(new ImageIcon("img/add.gif"));
 		addMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				// TODO
+				showPanel(GUI.ADDITION);
 			}
 		});
 		optionsMenu.add(addMenuItem);
@@ -104,8 +108,15 @@ public class GUI extends JFrame {
 
 		menuBar.add(fileMenu);
 		menuBar.add(optionsMenu);
-		setJMenuBar(menuBar);
-
-		setVisible(true);
+		this.setJMenuBar(menuBar);
+		
+		contentPanel = new JPanel(new FlowLayout());
+		this.setContentPane(contentPanel);
+	}
+	
+	private void showPanel(int panelName) {
+		this.contentPanel.add(new Addition());
+		this.revalidate();
+		this.pack();
 	}
 }
