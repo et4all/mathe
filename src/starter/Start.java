@@ -1,11 +1,11 @@
 package starter;
 
-import gui.GUI;
+import app.Application;
 
 public class Start {
 
 	public static void main(String[] args) {
-		new GUI();
+		new Application().startApplication();
 	}
 
 }

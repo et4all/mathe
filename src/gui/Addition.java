@@ -2,7 +2,6 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.FocusEvent;
@@ -10,10 +9,10 @@ import java.awt.event.FocusListener;
 import java.util.Random;
 
 import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
@@ -21,7 +20,9 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 
-public class Addition extends JPanel {
+import app.PanelType;
+
+public class Addition extends ExercisePanel {
 	private static final long serialVersionUID = 1L;
 	private JLabel zahl1 = new JLabel();
 	private JLabel zahl2 = new JLabel();
@@ -45,6 +46,7 @@ public class Addition extends JPanel {
 	private JPanel rightPanel = new JPanel();
 
 	public Addition() {
+		super(PanelType.ADDITION);
 		init();
 	}
 
@@ -53,7 +55,7 @@ public class Addition extends JPanel {
 		zahl1.setText(Integer.toString(getRandomInt(min, max)));
 		zahl2.setText(Integer.toString(getRandomInt(min, max)));
 
-		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.LINE_AXIS));
+		bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.X_AXIS));
 		
 		int antworten = 0;
 		JLabel statTextAntworten = new JLabel("Antworten: " + Integer.toString(antworten));
@@ -81,6 +83,7 @@ public class Addition extends JPanel {
 		centerPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		rightPanel.setPreferredSize((new Dimension(50, 50)));
 		rightPanel.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+
 		this.add(topPanel, BorderLayout.PAGE_START);
 		this.add(bottomPanel, BorderLayout.PAGE_END);
 		this.add(leftPanel, BorderLayout.LINE_START);
@@ -93,6 +96,14 @@ public class Addition extends JPanel {
 			}
 			@Override
 			public void focusGained(FocusEvent e) {
+				antwort.selectAll();
+			}
+		});
+		
+		antwort.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				checkResult();
 				antwort.selectAll();
 			}
 		});
@@ -147,6 +158,11 @@ public class Addition extends JPanel {
 		zahl2.setText(Integer.toString(getRandomInt(min, max)));
 		antwort.setText("");
 		antwort.requestFocus();
+	}
+
+	@Override
+	public JButton getDefaultPanelButton() {
+		return okButton;
 	}
 
 }

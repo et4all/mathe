@@ -1,19 +1,33 @@
 package gui;
 
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
 import javax.swing.UIManager;
+import javax.swing.border.EtchedBorder;
+
+import app.Application;
+import app.PanelType;
 
 public class GUI extends JFrame {
 	private static final long serialVersionUID = 1L;
+	private final Application app;
 	private int stdWidth = 500;
 	private int stdHeight = 300;
 	private JPanel contentPanel;
@@ -25,14 +39,18 @@ public class GUI extends JFrame {
 	private JMenuItem subMenuItem;
 	private JMenuItem mulMenuItem;
 	private JMenuItem divMenuItem;
-	public static final int ADDITION = 1;
+	private BorderLayout guiLayout;
+	private ExercisePanel currentPanel = null;
+	private JPanel menueLeiste;
+	private JPanel statusLeiste;
 
-	public GUI() {
+	public GUI(Application application) {
+		this.app = application;
 		init();
-		this.setVisible(true);
 	}
 
 	private void init() {
+		this.guiLayout = new BorderLayout();
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -40,6 +58,7 @@ public class GUI extends JFrame {
 			e.printStackTrace(); // TODO
 		}
 		this.setSize(stdWidth, stdHeight);
+		this.setMinimumSize(new Dimension(stdWidth, stdHeight));
 		this.setLocationRelativeTo(null);
 		this.setTitle("Mathe");
 
@@ -71,7 +90,7 @@ public class GUI extends JFrame {
 		addMenuItem.setIcon(new ImageIcon("img/add.gif"));
 		addMenuItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
-				showPanel(GUI.ADDITION);
+				showPanel(PanelType.ADDITION);
 			}
 		});
 		optionsMenu.add(addMenuItem);
@@ -109,14 +128,38 @@ public class GUI extends JFrame {
 		menuBar.add(fileMenu);
 		menuBar.add(optionsMenu);
 		this.setJMenuBar(menuBar);
-		
-		contentPanel = new JPanel(new FlowLayout());
+
+		contentPanel = new JPanel(guiLayout);
+		menueLeiste = new JPanel();
+		menueLeiste.setPreferredSize(new Dimension(100, 50));
+		contentPanel.add(menueLeiste, BorderLayout.LINE_START);
+		int antworten = 0;
+		JLabel statTextAntworten = new JLabel("Antworten: " + Integer.toString(antworten));
+		statTextAntworten.setPreferredSize(new Dimension(100, 20));
+		statusLeiste = new JPanel();
+		statusLeiste.setLayout(new BoxLayout(statusLeiste, BoxLayout.LINE_AXIS));
+		statusLeiste.setPreferredSize((new Dimension(400, 20)));
+		statusLeiste.setBorder(BorderFactory.createMatteBorder(1, 0, 0, 0, Color.LIGHT_GRAY));
+		statusLeiste.add(statTextAntworten);
+		statusLeiste.add(new JSeparator(SwingConstants.VERTICAL));
+		//statusleiste.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		contentPanel.add(statusLeiste, BorderLayout.PAGE_END);
 		this.setContentPane(contentPanel);
 	}
-	
-	private void showPanel(int panelName) {
-		this.contentPanel.add(new Addition());
-		this.revalidate();
-		this.pack();
+
+	private void showPanel(PanelType type) {
+		ExercisePanel panel = app.getSuchExercisePanel(type);
+		app.setCurrentPanel(panel);
+		contentPanel.add(panel, BorderLayout.CENTER);
+		contentPanel.revalidate();
 	}
+	
+	public void showWindow() {
+		this.setVisible(true);
+	}
+	
+	public Application getApplication() {
+		return app;
+	}
+	
 }
